@@ -1,0 +1,10 @@
+name: editorial_geo_overlay
+title: Editorial geo overlay
+description: 把旅行摄影做成独立杂志和旅行小志风格的地理视觉作品。原片不重新生成，只在天空、海面等负空间叠一层真实路网地图（Overpass 实查，非示意等高线），红点标拍摄点，地名和坐标只用实查结果，配罗盘和比例尺。只输出主图，不输出地图图层文件。适用于用户发来照片并要求加地图、步道、指北针等地理元素时。
+include_in_prompt: true
+availability:
+  confidential_vm: true
+  needs_speech: false
+skill_improvement:
+  managed: true
+  needs_review: true
