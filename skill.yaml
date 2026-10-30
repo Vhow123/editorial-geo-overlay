@@ -1,10 +1,26 @@
 name: editorial_geo_overlay
 title: Editorial geo overlay
 description: 把旅行摄影做成独立杂志和旅行小志风格的地理视觉作品。原片不重新生成，只在天空、海面等负空间叠一层真实路网地图（Overpass 实查，非示意等高线），红点标拍摄点，地名和坐标只用实查结果，配罗盘和比例尺。只输出主图，不输出地图图层文件。适用于用户发来照片并要求加地图、步道、指北针等地理元素时。
+category: Travel and local plans
 include_in_prompt: true
 availability:
   confidential_vm: true
   needs_speech: false
 skill_improvement:
   managed: true
-  needs_review: true
+  status: active
+  needs_review: false
+  evidence_handles:
+  - message:assistant-msg-9bf5d68e-2bd4-430c-b5b6-af460f23425e
+  - message:6a7bb4c4-5190-4a1c-9da8-ed18b3da8839
+  - message:assistant-msg-6f259201-1075-4a66-a175-db5de6111392
+  - /home/hatch/workspace/custom-skills/editorial_geo_overlay/SKILL.md
+  - ~/TOOLS.md
+  measurement:
+    proxy_metric_id: geo_overlay_delivery_and_fetch_compliance
+    success_criterion: In the window, every geo overlay delivery is the image plus at most one short line, plus a warning sentence only when a warning applies, with no user correction for verbosity, and every geo build that hits an Overpass block tries the OSM main API map call for the small bbox instead of stalling after retries, with no user correction for a missing road layer that the fallback would have supplied.
+    window_days: 21
+  rationale: 'The 2026-10-29 afternoon evidence shows two new gaps in the current editorial_geo_overlay file, distinct from the scale, footpath, legend and building-centre change already published and still in its measurement window. First, the 07:27 delivery (message:assistant-msg-9bf5d68e-2bd4-430c-b5b6-af460f23425e) succeeded only by switching the road network to the OSM main API map call after Overpass returned 406 on the main endpoint and 403 on the French mirror, yet Step 3 of the current file only retries Overpass up to four times and gives no fallback, so the next build following the skill alone would stall or report no roads. Second, the user then ordered minimal delivery (message:6a7bb4c4-5190-4a1c-9da8-ed18b3da8839) and the assistant claimed the rule was written (message:assistant-msg-6f259201-1075-4a66-a175-db5de6111392), but the file now contradicts itself: the Deliver section allows only one short line plus a warning sentence, while Step 3b step 7 still says to deliver with source, bbox and 100 m and 500 m counts and vintage, and another Deliver bullet and the Layout legend bullet still tell the agent to give a plain-words account and repeat the legend in delivery text. This update adds the proven OSM main API fallback for a small bbox, with local conversion into the builder format, and demotes the counts, caveats and legend repeat to working notes and on-request detail, leaving the warning sentence as the only delivery exception. Other window signals were checked and rejected as grounds for change: cron runs showed 0 failures, the deterministic repeated handoff suppression candidates propose objective-loop policy changes this loop never changes, the generic exec and browser_open tool failures carry no skill-linked detail, and the A-shares and X watch work in the window reported missing items and new posts correctly.'
+  review_after: 2026-11-19T09:43:14.605081+00:00
+  reviewed_at: 2026-10-29T09:43:14.605081+00:00
+  run_id: sirun_07fb5296c43e4fd2ad411ddd45655e13
